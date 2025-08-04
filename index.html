@@ -793,17 +793,17 @@ $(document).ready(function() {
         helperItems.forEach((item, index) => {
             const finalUnitPrice = item.unit === 'm2' ? item.unitPrice : (item.quantity > 0 ? item.totalPrice / item.quantity : 0);
             const row = document.createElement('tr');
-            // MODIFIED: Row innerHTML updated to remove m2 column
+            // MODIFIED: All table cells are now center-aligned
             row.innerHTML = `
                 <td class="text-center">${index + 1}</td>
-                <td class="text-left">${item.name}</td>
-                <td class="text-right">${item.width}</td>
-                <td class="text-right">${item.height.toFixed(2)}</td>
-                <td class="text-left">${item.spec}</td>
+                <td class="text-center">${item.name}</td>
+                <td class="text-center">${formatNumber(item.width)}</td>
+                <td class="text-center">${formatNumber(item.height)}</td>
+                <td class="text-center">${item.spec}</td>
                 <td class="text-center">${item.unit}</td>
-                <td class="text-right">${formatCurrency(finalUnitPrice)}</td>
-                <td class="text-right">${formatNumber(item.quantity)}</td>
-                <td class="text-right">${formatCurrency(item.totalPrice)}</td>
+                <td class="text-center">${formatCurrency(finalUnitPrice)}</td>
+                <td class="text-center">${formatNumber(item.quantity)}</td>
+                <td class="text-center">${formatCurrency(item.totalPrice)}</td>
             `;
             mainQuoteBody.appendChild(row);
         });
