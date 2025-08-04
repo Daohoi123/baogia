@@ -292,48 +292,42 @@
 
             <!-- Customer Info and Intro -->
             <div class="mb-4 text-left">
-                <p class="mt-2 font-bold manual-edit">Công Ty TNHH Đầu Tư Tổng hợp Nhất Việt kính chào Quý khách. Cảm ơn Quý khách đã ủng hộ Nhất Việt trong thời gian qua. Theo yêu cầu của Quý khách, chúng tôi xin gởi bảng báo giá như sau:</p>
+                <!-- MODIFIED: Bolding only the company name -->
+                <p class="mt-2 manual-edit"><span class="font-bold">Công Ty TNHH Đầu Tư Tổng hợp Nhất Việt</span> kính chào Quý khách. Cảm ơn Quý khách đã ủng hộ Nhất Việt trong thời gian qua. Theo yêu cầu của Quý khách, chúng tôi xin gởi bảng báo giá như sau:</p>
             </div>
 
             <!-- Quotation Table -->
+            <!-- MODIFIED: Table header updated -->
             <table id="main-quote-table" class="mb-4">
                 <thead>
                     <tr>
-                        <th class="w-12">STT</th>
-                        <th>Hạng mục</th>
+                        <th rowspan="2" class="w-12">STT</th>
+                        <th rowspan="2">Hạng mục</th>
                         <th colspan="2">Kích Thước (cm)</th>
-                        <th>Quy cách</th>
-                        <th>ĐVT</th>
-                        <th>Đơn giá</th>
-                        <th>Số lượng</th>
-                        <th>m2</th>
-                        <th>Thành Tiền</th>
+                        <th rowspan="2" style="width: 25%;">Quy cách</th>
+                        <th rowspan="2">ĐVT</th>
+                        <th rowspan="2">Đơn giá</th>
+                        <th rowspan="2">Số lượng</th>
+                        <th rowspan="2">Thành Tiền</th>
                     </tr>
                     <tr>
-                        <th></th>
-                        <th></th>
                         <th>Ngang</th>
                         <th>Cao</th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody id="main-quote-body"></tbody>
                 <tfoot>
+                    <!-- MODIFIED: Colspan updated -->
                     <tr class="total-row">
-                        <td colspan="9">TỔNG TIỀN CHƯA BAO GỒM VAT</td>
+                        <td colspan="8">TỔNG TIỀN CHƯA BAO GỒM VAT</td>
                         <td id="subtotal-quote" class="text-right">0</td>
                     </tr>
                     <tr class="total-row">
-                        <td colspan="9">VAT</td>
+                        <td colspan="8">VAT</td>
                         <td id="vat-quote" class="text-right">0</td>
                     </tr>
                     <tr class="total-row">
-                        <td colspan="9">TỔNG TIỀN BAO GỒM VAT</td>
+                        <td colspan="8">TỔNG TIỀN BAO GỒM VAT</td>
                         <td id="grandtotal-quote" class="text-right">0</td>
                     </tr>
                 </tfoot>
@@ -799,6 +793,7 @@ $(document).ready(function() {
         helperItems.forEach((item, index) => {
             const finalUnitPrice = item.unit === 'm2' ? item.unitPrice : (item.quantity > 0 ? item.totalPrice / item.quantity : 0);
             const row = document.createElement('tr');
+            // MODIFIED: Row innerHTML updated to remove m2 column
             row.innerHTML = `
                 <td class="text-center">${index + 1}</td>
                 <td class="text-left">${item.name}</td>
@@ -808,7 +803,6 @@ $(document).ready(function() {
                 <td class="text-center">${item.unit}</td>
                 <td class="text-right">${formatCurrency(finalUnitPrice)}</td>
                 <td class="text-right">${formatNumber(item.quantity)}</td>
-                <td class="text-right">${item.m2.toFixed(4)}</td>
                 <td class="text-right">${formatCurrency(item.totalPrice)}</td>
             `;
             mainQuoteBody.appendChild(row);
