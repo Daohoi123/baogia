@@ -587,6 +587,7 @@ $(document).ready(function() {
     }
 
     // --- CRUD OPERATIONS for Helper Table ---
+    // MODIFIED: This function is updated to prevent rounding errors.
     function handleAddOrUpdateItem() {
         const unitValue = inputRow.unit.value === 'khác' ? inputRow.unitOther.value.trim() : inputRow.unit.value;
         const nameValue = inputRow.name.value.trim();
@@ -607,14 +608,18 @@ $(document).ready(function() {
         const quantity = parseFloat(inputRow.quantity.value) || 0;
         const width = parseFloat(inputRow.width.value) || 0;
         const height = parseFloat(inputRow.height.value) || 0;
-        const unitPrice = getRawPrice(inputRow.unitPrice);
         const m2 = (width * height / 10000) * quantity;
 
-        let finalTotalPrice;
+        // Get the final total price directly from its input field.
+        // This ensures the value the user sees is the value that is saved, preventing rounding errors.
+        const finalTotalPrice = getRawPrice(inputRow.price);
+
+        // Recalculate unit price from the final total price for internal data consistency.
+        let finalUnitPrice;
         if (unitValue === 'm2') {
-            finalTotalPrice = m2 * unitPrice;
+            finalUnitPrice = getRawPrice(inputRow.unitPrice);
         } else {
-            finalTotalPrice = quantity * unitPrice;
+            finalUnitPrice = quantity > 0 ? finalTotalPrice / quantity : 0;
         }
 
         const itemData = {
@@ -623,11 +628,11 @@ $(document).ready(function() {
             width: width,
             height: height,
             unit: unitValue,
-            unitPrice: unitPrice,
+            unitPrice: finalUnitPrice, // Store the most accurate unit price
             quantity: quantity,
             vat: parseFloat(inputRow.vat.value) || 0,
             m2: m2,
-            totalPrice: finalTotalPrice
+            totalPrice: finalTotalPrice // Store the exact total price from the input
         };
         
         if (editingItemId !== null) {
@@ -646,6 +651,7 @@ $(document).ready(function() {
         calculateAndDisplayTotals();
         resetInputRow();
     }
+
 
     function startEditingItem(itemId) {
         const item = helperItems.find(i => i.id === itemId);
